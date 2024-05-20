@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <h1>Xác nhận email</h1>
+    <p>Vui lòng nhập mã xác thực được gửi đến email của bạn để hoàn tất đăng ký.</p>
+    <form action="/users/verify" method="POST">
+        <input type="hidden" name="email" value="<%= email %>">
+        <label for="verificationCode">Mã Xác Thực:</label>
+        <input type="text" id="verificationCode" name="verificationCode" required>
+        <button type="submit">Xác Nhận</button>
+    </form>
+    <% if (typeof message !== 'undefined' && message) { %>
+        <script>
+          alert('<%= message %>');
+        </script>
+      <% } %>
+</body>
+
+</html>

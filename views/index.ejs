@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập đăng ký</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles.css" type="text/css">
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="form-container register-container" id="registerSection">
+            <form action="/users/register" method="POST">
+                <h1>Đăng ký</h1>
+                <input type="text" placeholder="Tên Doanh Nghiệp" name="name" id="name" required>
+                <input type="email" placeholder="Email Doanh Nghiệp" name="email" id="email" required>
+                <input type="password" placeholder="Mật khẩu" name="password" id="password" required>
+                <input type="password" placeholder="Nhập lại mật khẩu" id="password2" name="password2" required>
+                <button type="submit">Đăng ký</button>
+                <div class="pass-link">
+                    <br><br>
+                    <a href="/">Về trang chủ</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-container login-container" id="loginSection">
+            <form action="/users/login" method="POST">
+                <h1>Đăng nhập</h1>
+                <input type="email" placeholder="email" name="email" id="email" required>
+                <input type="password" placeholder="Mật khẩu" name="password" id="password" required>
+                <div class="content">
+                    <div class="checkbox">
+                        <input type="checkbox" name="checkbox" id="checkbox">
+                        <label>Nhớ mật khẩu</label>
+                    </div>
+                    <div class="pass-link">
+                        <a href="#">Quên mật khẩu</a>
+                    </div>
+                </div>
+                <button type="submit">Đăng nhập</button>
+                <div class="social-container">
+                </div>
+                <div class="pass-link">
+                    <br><br>
+                    <a href="/">Về trang chủ</a>
+                </div>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1 class="title">Xin chào <br> Bạn của tôi</h1>
+                    <p>Nếu bạn đã có tài khoản, vui lòng đăng nhập</p>
+                    <button class="ghost" id="logins">Đăng nhập</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1 class="title">Bắt đầu <br>hành trình của bạn ngay bây giờ</h1>
+                    <p>Nếu bạn chưa có tài khoản, hãy tham gia với chúng tôi và bắt đầu hành trình của bạn</p>
+                    <button class="ghost" id="registers">Đăng ký</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const registerButton = document.getElementById("registers");
+        const loginButton = document.getElementById("logins")
+        const container = document.getElementById("container")
+
+        registerButton.addEventListener("click", () => {
+            container.classList.add("right-panel-active")
+        })
+
+        loginButton.addEventListener("click", () => {
+            container.classList.remove("right-panel-active")
+        })
+    </script>
+    <% if (errors && errors.length> 0 ) { %>
+        <script>alert('<%= errors.join("\\n") %>');
+        </script>
+        <% } %>
+
+</body>
+
+</html>

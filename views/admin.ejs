@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            background: rgb(2, 0, 36);
+            background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(234, 47, 157, 0.7338585092240021) 37%, rgba(0, 212, 255, 1) 100%);
+            color: white;
+        }
+        a{
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, <%= name %>! You are an Admin.</p>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+    <p><a href="/users/logout">Logout</a></p>
+</body>
+</html>
