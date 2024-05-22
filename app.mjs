@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import indexRouter from './routes/index.mjs';
 import usersRouter from './routes/users.mjs';
+import articleRouter from './routes/article.mjs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -63,6 +64,7 @@ app.use(express.urlencoded({ extended: true }));
 // Configure routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/article', articleRouter);
 
 // Setup admin account
 function setupAdminAccount() {
