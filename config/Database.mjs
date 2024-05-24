@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const mongoURI = 'mongodb+srv://hoangviet:wqnwXzNFNCcqH21g@cluster0.a7ff2lm.mongodb.net/CMS?retryWrites=true&w=majority&appName=Cluster0';
 
-const connectDB = async () => {
+export const connectDB = async () => {
   try {
     await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log('Kết nối thành công');
@@ -12,7 +12,8 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;
+// export default connectDB;
+
 // const mongoose = require('mongoose');
 // const mongoURI = 'mongodb+srv://hoangviet:wqnwXzNFNCcqH21g@cluster0.a7ff2lm.mongodb.net/CMS?retryWrites=true&w=majority&appName=Cluster0';
   

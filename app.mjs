@@ -10,11 +10,15 @@ import dotenv from 'dotenv';
 import path from 'path';
 import indexRouter from './routes/index.mjs';
 import usersRouter from './routes/users.mjs';
+import articlesRouter from './routes/articles.mjs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import {connectDB} from './config/Database.mjs'
 
 // Load environment variables from .env file
 dotenv.config();
+connectDB();
+
 
 // Initialize Express app
 const app = express();
@@ -63,6 +67,7 @@ app.use(express.urlencoded({ extended: true }));
 // Configure routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/cms', articlesRouter)
 
 // Setup admin account
 function setupAdminAccount() {
@@ -92,11 +97,15 @@ function setupAdminAccount() {
 }
 
 // Call setup function when server starts
-setupAdminAccount();
+// setupAdminAccount();
 
 // Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5001;
+const hostname = process.env.SERVER_HOST || 'localhost';
+app.get('/', (req, res) => {
+  res.end('<h1>Hello World!!</h1><hr>')
+})
+app.listen(PORT, () => console.log(`Server running at http://${hostname}:${PORT}/`));
 
 
 // const express = require('express');
