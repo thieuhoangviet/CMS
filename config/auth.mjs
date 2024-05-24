@@ -14,20 +14,5 @@ export const ensureAdmin = (req, res, next) => {
   res.redirect('/dashboard');
 };
 
-// module.exports = {
-//     ensureAuthenticated: function(req, res, next) {
-//       if (req.isAuthenticated()) {
-//         return next();
-//       }
-//       req.flash('error_msg', 'Please log in to view that resource');
-//       res.redirect('/users/login');
-//     },
-//     ensureAdmin: function(req, res, next) {
-//       if (req.user.role === 'admin') {
-//         return next();
-//       }
-//       req.flash('error_msg', 'You do not have sufficient rights to view this page');
-//       res.redirect('/dashboard');
-//     }
-//   };
+
   
