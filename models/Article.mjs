@@ -11,7 +11,7 @@ const articleShema = mongoose.Schema({
         unique: true,
       },
       content: {
-        type: String,
+        type: Array,
         required: true,
       },
       excerpt: {
