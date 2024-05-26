@@ -7,7 +7,7 @@ const connectDB = async () => {
     await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log('Kết nối thành công');
   } catch (err) {
-    console.log('Database connection error:', err);
+    console.log('Kết nối thất bại');
     process.exit(1);
   }
 };

@@ -1,5 +1,5 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import connectDB from './config/Database.mjs';
 import session from 'express-session';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
@@ -12,6 +12,7 @@ import indexRouter from './routes/index.mjs';
 import usersRouter from './routes/users.mjs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -64,39 +65,50 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// Setup admin account
-function setupAdminAccount() {
-  const adminEmail = "admin@gmail.com";
-  const adminPassword = "admin"; // Ideally, use environment variables or secure methods to store this
-  const adminRole = "admin";
+// // Setup admin account
+// function setupAdminAccount() {
+//   const adminEmail = "admin@gmail.com";
+//   const adminPassword = "admin"; // Ideally, use environment variables or secure methods to store this
+//   const adminRole = "admin";
 
-  User.findOne({ email: adminEmail }).then(user => {
-    if (!user) {
-      bcrypt.genSalt(10, (err, salt) => {
-        if (err) console.error('Error generating salt:', err);
-        bcrypt.hash(adminPassword, salt, (err, hash) => {
-          if (err) console.error('Error hashing password:', err);
-          const newUser = new User({
-            name: "Admin",
-            email: adminEmail,
-            password: hash,
-            role: adminRole,
-            emailVerified: true
-          });
-          newUser.save().then(() => {
-          }).catch(err => console.error('Error saving admin user:', err));
-        });
-      });
-    }
-  }).catch(err => console.error('Error finding admin user:', err));
-}
+//   User.findOne({ email: adminEmail }).then(user => {
+//     if (!user) {
+//       bcrypt.genSalt(10, (err, salt) => {
+//         if (err) console.error('Error generating salt:', err);
+//         bcrypt.hash(adminPassword, salt, (err, hash) => {
+//           if (err) console.error('Error hashing password:', err);
+//           const newUser = new User({
+//             name: "Admin",
+//             email: adminEmail,
+//             password: hash,
+//             role: adminRole,
+//             emailVerified: true
+//           });
+//           newUser.save().then(() => {
+//           }).catch(err => console.error('Error saving admin user:', err));
+//         });
+//       });
+//     }
+//   }).catch(err => console.error('Error finding admin user:', err));
+// }
 
 // Call setup function when server starts
-setupAdminAccount();
+// setupAdminAccount();
 
 // Start the server
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+connectDB().then(() => {
+  app.use('/', indexRouter);
+  app.use('/users', usersRouter);
+
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}).catch(err => {
+  console.error('Failed to start the server due to database connection error:', err);
+});
 
 
 // const express = require('express');
