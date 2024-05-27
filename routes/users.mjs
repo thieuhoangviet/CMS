@@ -14,6 +14,26 @@ router.get('/login', (req, res) => res.render('index', {
     error_msg: req.flash('error_msg')
 }));
 
+// Đăng nhập xử lý
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            req.flash('error_msg', 'Thông tin đăng nhập không chính xác');
+            return res.redirect('/users/login');
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            req.flash('success_msg', 'Chào mừng bạn đến với chúng tôi');
+            return res.redirect('/dashboard'); 
+        });
+    })(req, res, next);
+});
+
 // Đăng ký
 router.get('/register', (req, res) => res.render('index', {
     showVerification: false,
@@ -32,7 +52,7 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+const passwordRegex = /^.{8,}$/;
 
 // Xử lý đăng ký
 router.post('/register', async (req, res, next) => {
@@ -41,21 +61,21 @@ router.post('/register', async (req, res, next) => {
 
     // Check required fields
     if (!name || !email || !password || !password2) {
-        errors.push('Vui lòng điền vào tất cả các trường');
+        return errors.push('Vui lòng điền vào tất cả các trường');
     }
 
     if (email === "admin@gmail.com") {
-        errors.push("Email này không được phép đăng ký")
+        return errors.push("Email này không được phép đăng ký")
     }
 
     // Check passwords match
     if (password !== password2) {
-        errors.push('Mật khẩu không khớp');
+        return errors.push('Mật khẩu không khớp');
     }
 
     // Check pass length
     if (!passwordRegex.test(password)) {
-        errors.push('Mật khẩu phải có ít nhất 8 ký tự và bao gồm ít nhất một chữ hoa, một chữ thường, một số, và một ký tự đặc biệt');
+        return errors.push('Mật khẩu phải có ít nhất 8 ký tự');
     }
 
     if (errors.length > 0) {
@@ -72,16 +92,7 @@ router.post('/register', async (req, res, next) => {
             const user = await User.findOne({ email, name });
 
             if (user) {
-                errors.push('Email hoặc Doanh nghiệp đã được đăng ký');
-                return res.render('index', {
-                    showVerification: true,
-                    errors,
-                    name,
-                    email,
-                    password,
-                    password2,
-                    showRegistration: true
-                });
+                return errors.push('Email hoặc tên đã được đăng ký');
             }
 
             const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Tạo mã xác thực
@@ -146,15 +157,15 @@ router.post('/verify', async (req, res) => {
     }
 });
 
-// Đăng nhập xử lý
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/users/login',
-        failureFlash: true,
-        success_msg: "Chào mừng bạn đến với chúng tôi"
-    })(req, res, next);
-});
+// // Đăng nhập xử lý
+// router.post('/login', (req, res, next) => {
+//     passport.authenticate('local', {
+//         successRedirect: '/dashboard',
+//         failureRedirect: '/users/login',
+//         failureFlash: true,
+//         success_msg: "Chào mừng bạn đến với chúng tôi"
+//     })(req, res, next);
+// });
 
 // Đăng xuất
 router.get('/logout', (req, res) => {
@@ -238,8 +249,8 @@ export default router;
 //         });
 //     } else {
 //         User.findOne({ email: email, name: name }).then(user => {
-//             if (user) {
-//                 errors.push('Email hoặc Doanh nghiệp đã được đăng ký');
+            // if (user) {
+            //     errors.push('Email hoặc Doanh nghiệp đã được đăng ký');
 //                 res.render('index', {
 //                     showVerification: true,
 //                     errors,

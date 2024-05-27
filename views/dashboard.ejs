@@ -16,6 +16,11 @@
     </style>
 </head>
 <body>
+    <% if (messages && messages.success_msg) { %>
+        <script>
+            alert('<%= messages.success_msg %>');
+        </script>
+        <% } %>
     <h1>Dashboard</h1>
     <p>Welcome, <%= name %>! Your role is <%= role %>.</p>
     <% if (role === 'admin') { %>

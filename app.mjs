@@ -66,34 +66,34 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // // Setup admin account
-// function setupAdminAccount() {
-//   const adminEmail = "admin@gmail.com";
-//   const adminPassword = "admin"; // Ideally, use environment variables or secure methods to store this
-//   const adminRole = "admin";
+function setupAdminAccount() {
+  const adminEmail = "admin@gmail.com";
+  const adminPassword = "admin"; // Ideally, use environment variables or secure methods to store this
+  const adminRole = "admin";
 
-//   User.findOne({ email: adminEmail }).then(user => {
-//     if (!user) {
-//       bcrypt.genSalt(10, (err, salt) => {
-//         if (err) console.error('Error generating salt:', err);
-//         bcrypt.hash(adminPassword, salt, (err, hash) => {
-//           if (err) console.error('Error hashing password:', err);
-//           const newUser = new User({
-//             name: "Admin",
-//             email: adminEmail,
-//             password: hash,
-//             role: adminRole,
-//             emailVerified: true
-//           });
-//           newUser.save().then(() => {
-//           }).catch(err => console.error('Error saving admin user:', err));
-//         });
-//       });
-//     }
-//   }).catch(err => console.error('Error finding admin user:', err));
-// }
+  User.findOne({ email: adminEmail }).then(user => {
+    if (!user) {
+      bcrypt.genSalt(10, (err, salt) => {
+        if (err) console.error('Error generating salt:', err);
+        bcrypt.hash(adminPassword, salt, (err, hash) => {
+          if (err) console.error('Error hashing password:', err);
+          const newUser = new User({
+            name: "Admin",
+            email: adminEmail,
+            password: hash,
+            role: adminRole,
+            emailVerified: true
+          });
+          newUser.save().then(() => {
+          }).catch(err => console.error('Error saving admin user:', err));
+        });
+      });
+    }
+  }).catch(err => console.error('Error finding admin user:', err));
+}
 
 // Call setup function when server starts
-// setupAdminAccount();
+setupAdminAccount();
 
 // Start the server
 
