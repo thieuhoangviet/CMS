@@ -61,21 +61,25 @@ router.post('/register', async (req, res, next) => {
 
     // Check required fields
     if (!name || !email || !password || !password2) {
-        return errors.push('Vui lòng điền vào tất cả các trường');
+        errors.push('Vui lòng điền vào tất cả các trường');
+        return res.status(409).json({ errors });
     }
 
     if (email === "admin@gmail.com") {
-        return errors.push("Email này không được phép đăng ký")
+        errors.push("Email này không được phép đăng ký")
+        return res.status(409).json({ errors });
     }
 
     // Check passwords match
     if (password !== password2) {
-        return errors.push('Mật khẩu không khớp');
+        errors.push('Mật khẩu không khớp');
+        return res.status(409).json({ errors });
     }
 
     // Check pass length
     if (!passwordRegex.test(password)) {
-        return errors.push('Mật khẩu phải có ít nhất 8 ký tự');
+        errors.push('Mật khẩu phải có ít nhất 8 ký tự');
+        return res.status(409).json({ errors });
     }
 
     if (errors.length > 0) {
@@ -92,7 +96,8 @@ router.post('/register', async (req, res, next) => {
             const user = await User.findOne({ email, name });
 
             if (user) {
-                return errors.push('Email hoặc tên đã được đăng ký');
+                errors.push('Email hoặc tên đã được đăng ký');
+                return res.status(409).json({ errors });
             }
 
             const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Tạo mã xác thực
