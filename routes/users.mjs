@@ -102,15 +102,12 @@ router.post('/register', async (req, res, next) => {
                 errors.push('Email hoặc tên đã được đăng ký');
                 return res.status(409).json({ errors });
             }
-
-            const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Tạo mã xác thực
             const newUser = new User({
                 name,
                 email,
                 password,
                 role: role || 'user',
-                verificationCode,
-                emailVerified: false
+                emailVerified: true
             });
 
             // Hash Password
@@ -120,23 +117,8 @@ router.post('/register', async (req, res, next) => {
 
             await newUser.save();
 
-            // Gửi email xác thực
-            let mailOptions = {
-                from: 'thieuhoangviet63@gmail.com',
-                to: newUser.email,
-                subject: 'Xác Thực Email',
-                text: `Mã xác thực của bạn là ${verificationCode}`
-            };
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(error);
-                    res.redirect('/users/register');
-                } else {
-                    req.flash('success_msg', 'Vui lòng kiểm tra email để nhận mã xác thực.');
-                    res.redirect('/users/verify?email=' + newUser.email);
-                }
-            });
+            req.flash('success_msg', 'Tài khoản đã được tạo. Bạn có thể đăng nhập')
+            res.redirect('/login')
         } catch (error) {
             console.log(error);
         }
