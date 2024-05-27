@@ -4,7 +4,11 @@ import slugify from 'slugify'
 
 export const updateArticle =  async (req, res) => {
     try {
-        const article = await Articale.findById(req.params.id);
+        const id = req.params.id;
+        if(!/^[a-zA-Z0-9]+$/.test(id)) {
+            return res.status(404).json({ msg: "Article's Id invalid !!! It has special characters" });
+        }  
+        const article = await Articale.findById(id);
         if (!article) {
             return res.status(404).json({ msg: 'Article not found' });
         }
