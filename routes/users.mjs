@@ -16,12 +16,15 @@ router.get('/login', (req, res) => res.render('index', {
 
 // Đăng nhập xử lý
 router.post('/login', (req, res, next) => {
+    let errors = [];
     passport.authenticate('local', (err, user, info) => {
         if (err) {
             return next(err);
         }
         if (!user) {
+            errors.push('Thông tin đăng nhập không chính xác');
             req.flash('error_msg', 'Thông tin đăng nhập không chính xác');
+            return res.status(409).json({ errors });
             return res.redirect('/users/login');
         }
         req.logIn(user, (err) => {
@@ -29,7 +32,7 @@ router.post('/login', (req, res, next) => {
                 return next(err);
             }
             req.flash('success_msg', 'Chào mừng bạn đến với chúng tôi');
-            return res.redirect('/dashboard'); 
+            return res.redirect('/dashboard');
         });
     })(req, res, next);
 });
@@ -254,8 +257,8 @@ export default router;
 //         });
 //     } else {
 //         User.findOne({ email: email, name: name }).then(user => {
-            // if (user) {
-            //     errors.push('Email hoặc Doanh nghiệp đã được đăng ký');
+// if (user) {
+//     errors.push('Email hoặc Doanh nghiệp đã được đăng ký');
 //                 res.render('index', {
 //                     showVerification: true,
 //                     errors,
