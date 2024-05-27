@@ -26,7 +26,7 @@ export const updateArticle =  async (req, res) => {
 
 export const deleteArticle = async (req, res) => {
     try {
-        const article = await Articale.findById(id);
+        const article = await Articale.findById(req.params.id);
         if (!article) {
             return res.status(404).json({ msg: 'Article not found' });
         }
