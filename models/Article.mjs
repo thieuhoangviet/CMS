@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import slugify from 'slugify';
 
 
 const contentSchema = new mongoose.Schema({
@@ -11,14 +12,14 @@ const contentSchema = new mongoose.Schema({
 });
 
 const articleShema = new mongoose.Schema({
-  title: {
+  slug: {
     type: String,
     required: true,
   },
   article_slug: {
-    type: String,
-    required: true,
-    unique: true,
+    type: String
+    // required: true,
+    // unique: true,
   },
   content: [contentSchema],
   excerpt: {
@@ -46,6 +47,15 @@ const articleShema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-}, { collection: 'article_ex' })
+})
 
-export default mongoose.model('Article', articleShema);
+articleShema.pre('validate', function (next) {
+  console.log(typeof this.slug)
+  if (typeof this.slug === 'string' && !this.article_slug) {
+    console.log('Pre-validate middleware called');
+    this.article_slug = slugify(this.slug, { lower: true, strict: true });
+  }
+  next();
+});
+
+export default mongoose.model('CMS', articleShema);

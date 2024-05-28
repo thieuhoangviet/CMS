@@ -23,6 +23,8 @@ router.get('/admin', ensureAuthenticated, ensureAdmin, (req, res) =>
   })
 );
 
+
+
 export default router;
 // const express = require('express');
 // const router = express.Router();

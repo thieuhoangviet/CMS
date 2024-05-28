@@ -14,6 +14,7 @@ import articlesRouter from './routes/articles.mjs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import {connectDB} from './config/Database.mjs'
+import bodyParser from 'body-parser';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -63,6 +64,7 @@ passportConfig(passport);
 
 // Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Configure routes
 app.use('/', indexRouter);

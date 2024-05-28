@@ -1,9 +1,11 @@
 import express from 'express';
-import { getArticleBySlug } from '../controllers/articleController.mjs';
+import { createArticles, getArticleBySlug } from '../controllers/articleController.mjs';
 
 const router = express.Router();
 
-router.get('/articles/:slug', getArticleBySlug);
+router.get('/articles/:slug', getArticleBySlug)
+    .post('/create-article', createArticles)
+    
 
 export default router;
 
