@@ -60,6 +60,7 @@ const passwordRegex = /^.{8,}$/;
 // Xử lý đăng ký
 router.post('/register', async (req, res, next) => {
     let errors = [];
+    let success = []
     const { name, email, password, password2, role } = req.body;
 
     // Check required fields
@@ -117,7 +118,8 @@ router.post('/register', async (req, res, next) => {
 
             await newUser.save();
 
-            req.flash('success_msg', 'Tài khoản đã được tạo. Bạn có thể đăng nhập')
+            success.push('success_msg', 'Tài khoản đã được tạo. Bạn có thể đăng nhập')
+            res.status(200).json({ success });
             res.redirect('/login')
         } catch (error) {
             console.log(error);
