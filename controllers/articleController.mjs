@@ -62,3 +62,4 @@ export const getArticleBySlug = async (req, res) => {
         });
     }
 }
+
