@@ -2,21 +2,21 @@ import Articale from '../models/Article.mjs'
 import slugify from 'slugify'
 
 
-export const updateArticle =  async (req, res) => {
-    try { 
+export const updateArticle = async (req, res) => {
+    try {
         const article = await Articale.findById(req.params.id);
         if (!article) {
             return res.status(404).json({ msg: 'Article not found' });
         }
         article.title = req.body.title;
         article.content = req.body.content;
-        article.article_slug = slugify(req.body.title,{ lower: true });
+        article.article_slug = slugify(req.body.title, { lower: true });
         article.draft = req.body.draft;
         article.excerpt = req.body.excerpt;
         article.published = req.body.published;
         if (req.file) {
             article.image = req.file.filename;
-        }   
+        }
         await article.save();
         return res.status(200).json(article);
     } catch (error) {
@@ -40,8 +40,8 @@ export const deleteArticle = async (req, res) => {
 export const getArticleBySlug = async (req, res) => {
     try {
         const { slug } = req.params;
-        const article = await Article.findOne({article_slug: slug})
-        
+        const article = await Article.findOne({ article_slug: slug })
+
         console.log(slug)
         console.log(article)
 
@@ -61,5 +61,45 @@ export const getArticleBySlug = async (req, res) => {
             statusCode: 500
         });
     }
+
+
 }
 
+export const createArticles = async (req, res) => {
+    const { slug, content, excerpt, image, draft, published } = req.body;
+    console.log(req.body);
+
+    if (!slug) {
+        return res.status(400).json({
+            error: 'Bad Request',
+            message: 'Slug is required',
+            statusCode: 400
+        });
+    }
+
+    try {
+        // Tạo bài viết và lưu vào cơ sở dữ liệu
+        const article = await CMS.create({
+            slug: slug,
+            content: content,
+            excerpt: excerpt,
+            image: image,
+            draft: draft,
+            published: published
+        });
+
+        // Trả về phản hồi cho client
+        res.status(201).json({
+            savedArticle: article,
+            message: 'Article created successfully',
+            statusCode: 201
+        });
+    } catch (error) {
+        // Xử lý lỗi nếu có
+        res.status(500).json({
+            error: 'Internal Server Error',
+            message: error.message,
+            statusCode: 500
+        });
+    }
+}
