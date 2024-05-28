@@ -1,8 +1,9 @@
 import Articale from '../models/Article.mjs'
 import slugify from 'slugify'
 
+
 export const updateArticle =  async (req, res) => {
-    try {
+    try { 
         const article = await Articale.findById(req.params.id);
         if (!article) {
             return res.status(404).json({ msg: 'Article not found' });
@@ -15,7 +16,7 @@ export const updateArticle =  async (req, res) => {
         article.published = req.body.published;
         if (req.file) {
             article.image = req.file.filename;
-        }
+        }   
         await article.save();
         return res.status(200).json(article);
     } catch (error) {
