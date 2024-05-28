@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-import dotenv  from 'dotenv';
+import dotenv from 'dotenv';
 dotenv.config()
-const mongoURI = process.env.CONNECTION
+const mongoURI = "mongodb+srv://duyvo:Minh3001@cluster0.a7ff2lm.mongodb.net/CMS?retryWrites=true&w=majority&appName=Cluster0"
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(mongoURI);
     console.log('Kết nối thành công');
   } catch (err) {
     console.log('Database connection error:', err);
@@ -15,4 +15,3 @@ export const connectDB = async () => {
 
 export default connectDB;
 
-  

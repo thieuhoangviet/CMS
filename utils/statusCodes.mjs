@@ -1,4 +1,4 @@
-module.exports = {
+export const statusCodes = {
     /**
      * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.2.1
      *

@@ -2,6 +2,11 @@ import { AuthFailedError, NotFoundError } from "../core/error.response.mjs"
 import { asyncHandler } from "../helpers/asyncHandler.mjs"
 import jwt from "jsonwebtoken"
 
+const HEADER = {
+    AUTHORIZATION: 'authorization',
+    REFRESHTOKEN: "x-rtoken-id",
+}
+
 export const createTokenPair = async (payload, publicKey, privateKey) => {
 
     // accesstoken 
@@ -27,21 +32,11 @@ export const createTokenPair = async (payload, publicKey, privateKey) => {
 
 export const authentication = asyncHandler(async (req, res, next) => {
     /*
-        1 - check userId missing 
-        2 - get accessToken 
         3 - verify Token
         4 - check user in db 
         5 - check keyStore with this userId
         6 - ok all  => return next()
     */
-    //#1
-    const userIdREQ = req.headers[HEADER.CLIENT_ID]?.toString()
-    if (!userIdREQ || "") throw new AuthFailedError('invalid Request')
-
-    //#2
-    const keyStore = await KeyTokenService.findByUserID(userIdREQ)
-
-    if (!keyStore || "") throw new NotFoundError('Not found keystore')
 
     //#3
     const refreshToken = req.headers[HEADER.REFRESHTOKEN]?.toString()
@@ -52,9 +47,8 @@ export const authentication = asyncHandler(async (req, res, next) => {
 
             if (userIdREQ !== DecodeUser.userID) throw new AuthFailedError('invalid userId')//#5
 
-            req.headers[HEADER.keyStore] = JSON.stringify(keyStore)
             req.headers[HEADER.REFRESHTOKEN] = refreshToken
-            req.headers[HEADER.user] = JSON.stringify(DecodeUser)
+            
             return next()//#6
         } catch (error) {
             throw error

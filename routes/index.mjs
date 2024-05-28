@@ -1,27 +1,12 @@
 import express from 'express';
+import userRouter from "./user/users.mjs";
+import articleRouter from "./article/article.mjs";
+/*
+    * create Route index contain user routes and article routes
+*/
 const router = express.Router();
-import { ensureAuthenticated, ensureAdmin } from '../config/auth.mjs';
 
-// Trang chủ
-router.get('/', (req, res) => res.render('welcome'));
+router.use('/users', userRouter);
+router.use('/article', articleRouter);
 
-// Dashboard
-router.get('/dashboard', ensureAuthenticated, (req, res) =>
-  res.render('dashboard', {
-    name: req.user.name,
-    role: req.user.role,
-  })
-);
-
-// Chi tiết doanh nghiệp
-router.get('/detail', (req, res) => res.render('detail'));
-
-// Admin page
-router.get('/admin', ensureAuthenticated, ensureAdmin, (req, res) =>
-  res.render('admin', {
-    name: req.user.name,
-  })
-);
-
-export default router;
-
+export default router

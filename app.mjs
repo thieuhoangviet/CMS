@@ -1,24 +1,18 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import session from 'express-session';
+import passportConfig from './config/passport.mjs';
 import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-import bcrypt from 'bcryptjs';
 import flash from 'express-flash';
-import User from './models/User.mjs';
 import dotenv from 'dotenv';
 import path from 'path';
-import indexRouter from './routes/index.mjs';
-import usersRouter from './routes/users.mjs';
-import articleRouter from './routes/article.mjs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import {connectDB} from './config/Database.mjs'
+import { connectDB } from './config/Database.mjs'
+import router from './routes/index.mjs';
 
 // Load environment variables from .env file
 dotenv.config();
 connectDB();
-
 
 // Initialize Express app
 const app = express();
@@ -58,24 +52,38 @@ app.use((req, res, next) => {
 });
 
 // Configure Passport
-import passportConfig from './config/passport.mjs';
 passportConfig(passport);
 
-// Parse URL-encoded bodies
+//init middleware
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Configure routes
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/article', articleRouter);
+app.use('/', router)
 
+//handle errors
+app.use((req, res, next) => {
+  const error = new HttpError('Not Found', 404)
+  console.log(error);
+  next(error)
+})
+
+app.use((error, req, res, next) => {
+  const statusCode = 500
+
+  return res.status(statusCode).json({
+    status: 'error',
+    code: statusCode,
+    stack: error.stack,
+    message: error.message || 'Internal Server Error'
+  })
+})
 
 // Start the server
 const PORT = process.env.PORT || 5001;
 const hostname = process.env.SERVER_HOST || 'localhost';
-app.get('/', (req, res) => {
-  res.end('<h1>Hello World!!</h1><hr>')
-})
+
+
 app.listen(PORT, () => console.log(`Server running at http://${hostname}:${PORT}/`));
 
 

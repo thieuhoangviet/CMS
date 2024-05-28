@@ -1,4 +1,4 @@
-import Articale from '../models/Article.mjs'
+import Article from '../models/Article.model.mjs'
 import slugify from 'slugify'
 
 
@@ -39,11 +39,9 @@ export const deleteArticle = async (req, res) => {
 
 export const getArticleBySlug = async (req, res) => {
     try {
-        const { slug } = req.params;
-        const article = await Article.findOne({ article_slug: slug })
-
-        console.log(slug)
-        console.log(article)
+        const { id } = req.params;
+        const article = await Article.findOne({ article_slug: id })
+        console.log(id);
 
         if (!article) {
             return res.status(404).json({

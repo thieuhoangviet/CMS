@@ -1,6 +1,6 @@
 const specialCharacter = /^[a-zA-Z0-9]+$/;
 
-const validateId = (req, res, next) => {
+export const validateId = (req, res, next) => {
     const id = req.params.id;
     if(!specialCharacter.test(id)) {
         return res
@@ -9,5 +9,3 @@ const validateId = (req, res, next) => {
     } 
     next();
 };
-
-export default validateId;
