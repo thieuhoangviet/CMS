@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { connectDB } from './config/Database.mjs'
 import router from './routes/index.mjs';
+import { asyncHandler } from './helpers/asyncHandler.mjs';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -52,7 +53,8 @@ app.use((req, res, next) => {
 });
 
 // Configure Passport
-passportConfig(passport);
+
+passportConfig(passport)
 
 //init middleware
 app.use(express.json());
@@ -62,7 +64,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', router)
 
 //handle errors
-app.use((req, res, next) => {
+app.use((req, res, next) => {// ham dung de catch loi~ khong tim thay
   const error = new HttpError('Not Found', 404)
   console.log(error);
   next(error)
@@ -74,7 +76,7 @@ app.use((error, req, res, next) => {
   return res.status(statusCode).json({
     status: 'error',
     code: statusCode,
-    stack: error.stack,
+    // stack: error.stack, // dung de bao loi tren ! khong duoc dung tren moi truong production
     message: error.message || 'Internal Server Error'
   })
 })

@@ -3,17 +3,16 @@ import { upload } from '../../utils/imageUpload.mjs';
 import { asyncHandler } from '../../helpers/asyncHandler.mjs'; // func catch error
 import { updateArticleValidator } from '../../validators/updateArticleValidator.mjs';
 import { validateId } from '../../validators/validateId.mjs';
-import { createArticles, deleteArticle, getArticleBySlug, updateArticle } from '../../controllers/article.Controller.mjs';
-
+import { Article } from '../../controllers/article.Controller.mjs';
 const articleRouter = express.Router();
 
 //update article
 articleRouter
-    .put('/:id', validateId, updateArticleValidator, upload.single('image'), asyncHandler(updateArticle))
+    .put('/:id', validateId, updateArticleValidator, upload.single('image'), asyncHandler(Article.updateArticle))// ayncHandler giup bao loi~ khong bi crash ung dung
     // delete the article
-    .delete('/:id', validateId, asyncHandler(deleteArticle))
+    .delete('/:id', validateId, asyncHandler(Article.deleteArticle))
     //get article by slug
-    .get('/:id', getArticleBySlug)
+    .get('/:id', Article.getArticleBySlug)
     //create new article
-    .post('/create-article', asyncHandler(createArticles))
+    .post('/create-article', asyncHandler(Article.createArticles))
 export default articleRouter;

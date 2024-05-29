@@ -2,7 +2,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcryptjs';
 import User from '../models/User.mjs';
 
-export default function(passport) {
+export default function (passport) {
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
       // Match user
@@ -11,7 +11,7 @@ export default function(passport) {
           if (!user) {
             return done(null, false, { message: 'Email này không được đăng ký' });
           }
-          
+
           // So sánh password
           bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) throw err;
@@ -35,7 +35,7 @@ export default function(passport) {
 
   passport.deserializeUser((id, done) => {
     User.findById(id)
-      .then(user => done(null, user))
-      .catch(err => done(err, null));
+    .then(user => done(null, user))
+    .catch(err => done(err, null));
   });
 };

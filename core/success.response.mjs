@@ -1,7 +1,7 @@
 import {statusCodes} from '../utils/statusCodes.mjs';
 import {reasonPhrases} from '../utils/reasonPhrases.mjs';
 
-export class SuccessResponse {
+export class SuccessResponse { 
     message;
     status;
     metadata ;
@@ -27,3 +27,16 @@ export class CREATED extends SuccessResponse {
         this.options = options;
     }
 }
+
+
+/*
+?co the ke thua nhieu func thong bao thanh cong khac nua
+export class ACCEPTED extends SuccessResponse {
+    options;
+    constructor({ options = {}, message = "", statusCode = statusCodes.ACCEPTED, reasonStatusCode = reasonPhrases.ACCEPTED, metadata = {} }) {
+        super({ message, statusCode, reasonStatusCode, metadata });
+        this.options = options;
+    }
+}
+....
+*/
