@@ -9,9 +9,9 @@ const articleRouter = express.Router();
 
 //update article
 articleRouter
-    .get('/:id', Article.getArticleBySlug)
+    .get('/', Article.getArticleAll)
 
-    articleRouter.use(authentication)
+articleRouter.use(authentication)
     .put('/:id', validateId, updateArticleValidator, upload.single('image'), asyncHandler(Article.updateArticle))// ayncHandler giup bao loi~ khong bi crash ung dung
     // delete the article
     .delete('/:id', validateId, asyncHandler(Article.deleteArticle))

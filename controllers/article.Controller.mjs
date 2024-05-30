@@ -17,18 +17,18 @@ export class Article {
         }).send(res)
     }
 
-    static getArticleBySlug = async (req, res) => {
+    static getArticleAll = async (req, res) => {
         new SuccessResponse({// create new success response
-            message: "update success",
-            metadata: await ArticleService.getArticle(req.params.id)
+            message: " SuccessFull ",
+            metadata: await ArticleService.getArticle(req)
         }).send(res)
     }
 
     static createArticles = async (req, res) => {
-        const { slug, content, excerpt, image, draft, published } = req.body;
+        const {title, content, excerpt, image, draft, published } = req.body;
         new CREATED({// create new success response
             message: "update success",
-            metadata: await ArticleService.createArticle(slug, content, excerpt, image, draft, published)
+            metadata: await ArticleService.createArticle(title, content, excerpt, image, draft, published)
         }).send(res)
     }
 }
