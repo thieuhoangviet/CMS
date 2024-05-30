@@ -4,15 +4,18 @@ import { asyncHandler } from '../../helpers/asyncHandler.mjs'; // func catch err
 import { updateArticleValidator } from '../../validators/updateArticleValidator.mjs';
 import { validateId } from '../../validators/validateId.mjs';
 import { Article } from '../../controllers/article.Controller.mjs';
+import { authentication } from '../../auth/authUtils.mjs';
 const articleRouter = express.Router();
 
 //update article
 articleRouter
+    .get('/:id', Article.getArticleBySlug)
+
+    articleRouter.use(authentication)
     .put('/:id', validateId, updateArticleValidator, upload.single('image'), asyncHandler(Article.updateArticle))// ayncHandler giup bao loi~ khong bi crash ung dung
     // delete the article
     .delete('/:id', validateId, asyncHandler(Article.deleteArticle))
     //get article by slug
-    .get('/:id', Article.getArticleBySlug)
     //create new article
     .post('/create-article', asyncHandler(Article.createArticles))
 export default articleRouter;

@@ -14,21 +14,28 @@ export class AccessController {
     }
 
     static loginControlers = async (req, res, next) => {
-        await AccessService.login(req, res, next)
+        const { email, password } = req.body;
         new SuccessResponse({// create new success response
-            message: "login success"
+            message: "login success",
+            metadata: await AccessService.login(email, password)
         }).send(res)
     }
 
     static logoutControlers = async (req, res, next) => {
-        req.logout(function (err) {
-            if (err) {
-                return next(err);
-            }
-            res.redirect('/users/login')
-        });
         new SuccessResponse({// create new success response
-            message: "logout success"
+            message: "logout success",
+            metadata: await AccessService.logout(req)
+        }).send(res)
+    }
+
+    static handlerRefreshToken = async (req, res, next) => {
+        new SuccessResponse({// create new success response
+            message: "handler refresh token success",
+            metadata: await AccessService.handlerRefreshToken({
+                refreshToken: req.headers['x-rtoken-id'],
+                user: req.headers.user,
+                keyStore: req.headers.keyStore
+            })
         }).send(res)
     }
 }

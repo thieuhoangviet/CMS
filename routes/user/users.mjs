@@ -1,6 +1,7 @@
 import express from 'express';
 import { AccessController } from '../../controllers/access.Controller.mjs';
 import { asyncHandler } from '../../helpers/asyncHandler.mjs';
+import { authentication } from '../../auth/authUtils.mjs';
 const userRouter = express.Router();
 
 // Xử lý đăng ký
@@ -9,9 +10,12 @@ userRouter
 
     // Đăng nhập xử lý
     .post('/login', asyncHandler(AccessController.loginControlers))
-
+    
+    userRouter.use(authentication)
     // Đăng xuất1`
-    .get('/logout', asyncHandler(AccessController.logoutControlers));
+    .post('/logout', asyncHandler(AccessController.logoutControlers))
+
+    .post('/handlerRefreshToken',asyncHandler(AccessController.handlerRefreshToken))
 
 export default userRouter;
 

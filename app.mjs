@@ -76,7 +76,7 @@ app.use((error, req, res, next) => {
   return res.status(statusCode).json({
     status: 'error',
     code: statusCode,
-    // stack: error.stack, // dung de bao loi tren ! khong duoc dung tren moi truong production
+    stack: error.stack, // dung de bao loi tren ! khong duoc dung tren moi truong production
     message: error.message || 'Internal Server Error'
   })
 })
