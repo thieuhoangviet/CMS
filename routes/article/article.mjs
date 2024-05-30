@@ -12,7 +12,7 @@ articleRouter
     // delete the article
     .delete('/:id', validateId, asyncHandler(Article.deleteArticle))
     //get article by slug
-    .get('/:id', Article.getArticleBySlug)
+    .get('/', Article.getArticleAll)
     //create new article
     .post('/create-article', asyncHandler(Article.createArticles))
 export default articleRouter;
