@@ -1,5 +1,4 @@
 import express from 'express';
-import connectDB from './config/Database.mjs';
 import session from 'express-session';
 import passportConfig from './config/passport.mjs';
 import passport from 'passport';
