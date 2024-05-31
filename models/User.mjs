@@ -21,18 +21,21 @@ const UserSchema = new mongoose.Schema({
   },
   verificationCode: {
     type: String,
-    required: false, // Hoặc có thể bỏ "required: false" vì giá trị mặc định là false
+    required: false,
   },
   emailVerified: {
     type: Boolean,
     default: true,
   },
+}, {
+  timestamps: true,
+  collection: 'User'
 });
 
 const User = mongoose.model('User', UserSchema);
 
 export default User;
-// const mongoose = require('mongoose');
+
 // const UserSchema = new mongoose.Schema({
 //   name: {
 //     type: String,
