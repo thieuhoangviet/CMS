@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config()
-const mongoURI = "mongodb+srv://duyvo:Minh3001@cluster0.a7ff2lm.mongodb.net/CMS?retryWrites=true&w=majority&appName=Cluster0"
+const mongoURI = "mongodb+srv://hoangviet:wqnwXzNFNCcqH21g@cluster0.a7ff2lm.mongodb.net/CMS?retryWrites=true&w=majority&appName=Cluster0"
 
 export const connectDB = async () => {
   try {

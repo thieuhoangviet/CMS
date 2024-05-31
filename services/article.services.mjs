@@ -16,7 +16,7 @@ export class ArticleService {
         article.excerpt = req.body.excerpt;
         article.published = req.body.published;
         article.image = req.body.filename;
-        
+
         await article.save();
         return article
     }
@@ -26,7 +26,7 @@ export class ArticleService {
         if (!article) {
             throw new BadRequestError('Article not found');
         }
-       
+
         return { msg: 'Article removed' }
     }
 
@@ -34,27 +34,36 @@ export class ArticleService {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const total = await ArticleModel.countDocuments();
-       
+
         const { startIndex, endIndex, totalPages } = pagination(total, page, limit);
-        
+
         const articles = await ArticleModel.find()
-        .sort({ published_at: -1 })
-        .skip(startIndex)
-        .limit(limit);
+            .sort({ published_at: -1 })
+            .skip(startIndex)
+            .limit(limit);
         if (!articles) {
             throw new BadRequestError('Article not found');
         }
-        const paginationInfo ={
+        const paginationInfo = {
             page,
             limit,
             total,
             totalPages,
-          };
-        return articles 
+        };
+        return articles
+    }
+    static findArticle = async (id) => {
+
+        const articles = await ArticleModel.findOne({ article_slug: id })
+          
+        if (!articles) {
+            throw new BadRequestError('Article not found');
+        }
+        return articles
     }
 
     static createArticle = async (title, content, excerpt, image, draft, published) => {
-       
+
         const articleExists = await ArticleModel.findOne({ title: title })
         if (articleExists) {
             throw new BadRequestError('Article already exists');
@@ -75,7 +84,7 @@ export class ArticleService {
             savedArticle: article
         }
 
-        
+
     }
 }
 

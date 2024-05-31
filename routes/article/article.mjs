@@ -10,12 +10,12 @@ const articleRouter = express.Router();
 //update article
 articleRouter
     .get('/', Article.getArticleAll)
+    .get('/:id', Article.findArticle)
 
 articleRouter.use(authentication)
     .put('/:id', validateId, updateArticleValidator, upload.single('image'), asyncHandler(Article.updateArticle))// ayncHandler giup bao loi~ khong bi crash ung dung
     // delete the article
     .delete('/:id', validateId, asyncHandler(Article.deleteArticle))
-    //get article by slug
     //create new article
     .post('/create-article', asyncHandler(Article.createArticles))
 export default articleRouter;
