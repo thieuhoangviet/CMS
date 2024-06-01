@@ -93,7 +93,6 @@ export class AccessService {
                 code: 201,
                 metadata: {
                     user: newUser,
-                    tokens
                 }
             }
         }
