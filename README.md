@@ -19,6 +19,7 @@ Khi đăng nhập thành công sẽ trả về token , refreshToken,userID. Nh�
 Nhập vào header với token trả về : 
 
 authorization : TOKEN HERE 
+
 x-client-id : USER ID HERE
  
 2.Register:
